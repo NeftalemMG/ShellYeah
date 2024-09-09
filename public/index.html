@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shell Yeah</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="ShellLogo.jpg " type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <link rel="stylesheet" href="stylesForEverything.css">
+  <style>
+    
+  </style>
+   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <canvas class="particles"></canvas>
+
+  
+  <div class="container">
+    <header class="header">
+      <h1>Hello There, </h1>
+      <p>Your commands just got an upgrade </p>
+      <p>(or a downgrade, depending on how you look at things).</p> 
+      <p>Ready to get shellin'? </p>
+
+    </header>
+
+    <div class="terminal">
+      <div class="terminal-content" id="terminal-content">
+        <div id="output"></div>
+        <div class="input-line">
+          <span class="prompt" id="prompt">:) ~$</span>
+          <input type="text" id="command-input" autofocus>
+          <span class="cursor"></span>
+        </div>
+      </div>
+    </div>
+    
+    <footer class="footer">
+      <p>&copy; 2024 Shell Yeah. All rights reserved.</p>
+      <div class="social-links">
+        <a href="https://github.com/Yoboinef-2000" target="_blank">GitHub</a>
+        <!-- <a href="https://www.linkedin.com/in/neftalem-gebremicael" target="_blank">LinkedIn</a> -->
+        <!-- <a href="#" target="_blank">Twitter</a> -->
+      </div>
+    </footer>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script src="commonFileSystemCommands.js"></script>
+  <script src="simpleGames.js"></script>
+  <script src="breakShell.js"></script>
+  <script src="apiPoweredCommands.js"></script>
+  <!-- <script src="theParticleBackground.js"></script> -->
+  <script>
+
+    
+    const output = document.getElementById('output');
+    const input = document.getElementById('command-input');
+    const terminalContent = document.getElementById('terminal-content');
+    const promptElement = document.getElementById('prompt');
+
+    // let currentDirectory = 'home';
+    let prompt = ':) ~$';
+
+
+    const asciiBanner = `
+╔═╗┬ ┬┌─┐┬  ┬    ╦ ╦┌─┐┌─┐┬ ┬┬
+╚═╗├─┤├┤ │  │    ╚╦╝├┤ ├─┤├─┤│
+╚═╝┴ ┴└─┘┴─┘┴─┘   ╩ └─┘┴ ┴┴ ┴o
+                 `;
+
+    const themes = {
+      default: { bg: '#1a1a1a', text: '#ffffff', prompt: '#00b8d4' },
+      neon: { bg: '#0a0a0a', text: '#39ff14', prompt: '#ff00ff' },
+      sunset: { bg: '#282c34', text: '#ffa07a', prompt: '#ff6347' }
+    };
+
+    function setTheme(themeName) {
+      const theme = themes[themeName] || themes.default;
+      document.documentElement.style.setProperty('--bg-color', theme.bg);
+      document.documentElement.style.setProperty('--text-color', theme.text);
+      document.documentElement.style.setProperty('--prompt-color', theme.prompt);
+    }
+
+
+    function appendOutput(text) {
+      const newOutput = document.createElement('div');
+      newOutput.innerHTML = text;
+      output.appendChild(newOutput);
+      terminalContent.scrollTop = terminalContent.scrollHeight;
+    }
+
+    async function handleCommand(command) {
+      const [cmd, ...args] = command.split(' ');
+      let response = '';
+
+      switch (cmd) {
+        
+        
+        case 'help':
+          response = `
+  Available commands:
+    
+  File System Commands:
+    ls - List files and directories
+    cd directoryName - Change directory
+    cat fileName - Display file contents
+    mkdir directoryName - Create a new directory
+    rmdir directoryName - Remove an empty directory
+    touch fileName - Create a new empty file
+    rm fileName - Remove a file
+    pwd - Prints the path of the current working directory
+
+  Themes and Display:
+    theme themeName - Change color theme (default, neon, sunset)
+    clear - Clear the terminal
+    banner - Display the ASCII art banner
+
+  API-powered Commands:
+    weather cityName - Get real-time weather for a city
+    attractions cityName - Get top attractions in a city
+    news - Get latest news
+
+  Games and Fun:
+
+    memory - a simple fruit matching memory game
+    snake start|stop - Start or stop the Snake game
+    fireworks - Display a fireworks animation
+    pong - Start a Pong game
+    rickroll - You know what this does
+
+  Miscellaneous:
+    fortune - Get a random fortune message
+    constellation - Create your own constellation
+    draw - Open a simple drawing board
+    particles - Start an interactive particle system explorer
+  
+  Log off:
+    breakShell: Breaks the shell. 
+    
+  Type any command for more information.`
+  
+  ;
+        break;
+  
+
+        case 'ls':
+          response = ls(args);
+          break;
+
+        case 'cd':
+          response = cd(args);
+          break;
+
+        case 'pwd':
+          response = pwd();
+          break;
+
+        case 'mkdir':
+          response = mkdir(args);
+          break;
+
+        case 'rmdir':
+          response = rmdir(args);
+          break;
+
+        case 'touch':
+          response = touch(args);
+          break;
+
+        case 'rm':
+          response = rm(args);
+          break;
+
+        case 'cat':
+          response = cat(args);
+          break;
+        
+        case 'theme':
+          if (args[0] && themes[args[0]]) {
+            setTheme(args[0]);
+            response = `Theme changed to ${args[0]}`;
+          } else {
+            response = 'Invalid theme. Available themes: default, neon, sunset';
+          }
+          break;
+        
+        case 'clear':
+          output.innerHTML = '';
+          return;
+
+        case 'banner':
+          response = asciiBanner;
+          break;
+
+        case 'snake':
+            if (args[0] === 'start') {
+            snakeGameInterval = startSnakeGame();
+            response = 'Snake game started! Use arrow keys to play.';
+            } else if (args[0] === 'stop') {
+            response = stopSnakeGame();
+            } else {
+            response = 'Usage: snake start|stop';
+            }
+            break;
+
+        case 'fireworks':
+            response = startFireworks();
+            break;
+
+        case 'weather':
+            if (args[0]) {
+                response = await getWeatherForecast(args[0]);
+            } else  {
+                response = 'Please provide a city name. Usage: weather cityname';
+            }
+            break;
+        
+        case 'pong':
+            response = startPongGame();
+            break;
+
+        case 'draw':
+            response = startDrawingBoard();
+            break;
+
+        case 'particles':
+            response = startParticleExplorer();
+            break;
+
+        case 'attractions':
+          if (args[0]) {
+            response = await getLocalAttractions(args[0]);
+          } else {
+            response = 'Please provide a city name. Usage: attractions cityname';
+          }
+          break;
+
+        case 'news':
+            response = await getNewsHeadlines(args[0] || 'us');
+            break;
+
+        case 'fortune':
+            response = fortune();
+            break;
+
+        case 'constellation':
+            response = constellationCreator();
+            break;
+
+        case 'memory':
+            response = startMemoryMatch();
+            break;
+
+        case 'rickroll':
+            window.open('https://youtu.be/dQw4w9WgXcQ', '_blank');
+            response = 'Never gonna give you up...';
+            break;
+  
+        case 'breakShell':
+            breakShell();
+            return;
+
+        default:
+          response = `Command not found: ${cmd}. Type 'help' for available commands.`;
+      }
+
+      appendOutput(response);
+    }
+
+    input.addEventListener('keydown', async (event) => {
+      if (event.key === 'Enter') {
+        const command = input.value.trim();
+        appendOutput(`<span class="prompt">${prompt}</span> ${command}`);
+        input.value = '';
+        await handleCommand(command);
+      }
+    });
+
+
+    appendOutput(asciiBanner);
+    appendOutput("Welcome to this simple shell. Type 'help' for available commands.");
+
+  
+
+    const canvas = document.querySelector('.particles');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const particles = [];
+    const particleCount = 200;
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 5 + 1;
+        this.speedX = Math.random() * 3 - 1.5;
+        this.speedY = Math.random() * 3 - 1.5;
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if (this.size > 0.2) this.size -= 0.1;
+
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+      }
+
+
+      draw() {
+        ctx.fillStyle = 'rgba(0, 184, 212, 0.8)'; // Increased opacity
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+
+        if (particles[i].size <= 0.2) {
+          particles.splice(i, 1);
+          i--;
+          particles.push(new Particle());
+        }
+      }
+      requestAnimationFrame(animateParticles);
+    }
+
+    initParticles();
+    animateParticles();
+
+  </script>
+</body>
+</html>
