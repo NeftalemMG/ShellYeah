@@ -9,7 +9,7 @@ Welcome to Shell Yeah! - A gimmicky shell simulation with a twist of fun and cre
 - **Mini-Games**: 
   - 🐍 Snake: Classic snake game right in your terminal!
   - 🏓 Pong: Enjoy a game of Pong without leaving your command line.
-  - 🎆 Fireworks: Create your own fireworks display.
+  - 🎆 Fireworks: Create your own fireworks display. They are a little tame though, so manage expectations a little.
 - **API-Powered Commands**: Get real-time weather, stock information, and local attractions.
 - **Creative Tools**:
   - 🎨 Drawing Board: Express your creativity with a simple drawing tool.
@@ -38,7 +38,5 @@ We're open to contributions! If you have ideas for new features, games, or impro
 3. Commit your changes (`git commit -m 'Add some New Feature'`)
 4. Push to the branch (`git push origin feature/New Feature`)
 5. Open a Pull Request
-
-
 
 
