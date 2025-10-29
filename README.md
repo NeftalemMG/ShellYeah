@@ -1,8 +1,7 @@
 # Shell Yeah!
 A gimmicky shell simulation with a twist of fun (or not). It depends on who you are. 
 
-## 🚀 Features
-
+## Features
 - **Customizable Themes**: Change the look and feel of your shell with different color themes.
 - **Mini-Games**: 
   - Snake: Classic snake game right in your terminal!
@@ -13,7 +12,7 @@ A gimmicky shell simulation with a twist of fun (or not). It depends on who you 
   - Drawing Board: Express your creativity with a simple drawing tool.
   - Constellation Creator: Design your own constellations.
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - HTML5
 - CSS3
