@@ -18,7 +18,7 @@ A gimmicky shell simulation with a twist of fun (or not). It depends on who you 
 - CSS3
 - JavaScript (ES6+)
 
-## 🚦 Getting Started
+## Getting Started
 
 1. Clone this repository
 2. Open `index.html` in your browser
